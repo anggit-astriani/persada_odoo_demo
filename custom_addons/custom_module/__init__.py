@@ -53,9 +53,9 @@ def post_init_hook(env):
         _logger.info("Converting demo data coordinates to PostGIS geometries...")
         cr.execute("""
             UPDATE stock_picking 
-            SET shape = ST_SetSRID(ST_MakePoint(longitude, latitude), 4326)
-            WHERE latitude IS NOT NULL 
-            AND longitude IS NOT NULL 
+            SET shape = ST_SetSRID(ST_MakePoint(delivered_longitude, delivered_latitude), 4326)
+            WHERE delivered_latitude IS NOT NULL 
+            AND delivered_longitude IS NOT NULL 
             AND (shape IS NULL OR ST_IsEmpty(shape))
         """)
 
