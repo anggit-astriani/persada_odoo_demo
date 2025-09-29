@@ -38,18 +38,18 @@ def post_init_hook(env):
         cr.execute("""
             SELECT column_name 
             FROM information_schema.columns 
-            WHERE table_name = 'stock_picking' AND column_name = 'shape'
+            WHERE table_name = 'request_installment_order' AND column_name = 'shape'
         """)
         shape_exists = cr.fetchone()
 
         if not shape_exists:
             _logger.info("Creating shape column...")
-            cr.execute("ALTER TABLE stock_picking ADD COLUMN shape geometry(POINT, 4326);")
+            cr.execute("ALTER TABLE request_installment_order ADD COLUMN shape geometry(POINT, 4326);")
 
         # Update demo data with PostGIS geometries
         _logger.info("Converting demo data coordinates to PostGIS geometries...")
         cr.execute("""
-            UPDATE stock_picking 
+            UPDATE request_installment_order 
             SET shape = ST_SetSRID(ST_MakePoint(longitude, latitude), 4326)
             WHERE latitude IS NOT NULL 
             AND longitude IS NOT NULL 
@@ -62,16 +62,16 @@ def post_init_hook(env):
         # Create spatial index for better performance
         try:
             cr.execute("""
-                CREATE INDEX IF NOT EXISTS idx_stock_picking_shape_gist 
-                ON stock_picking USING GIST (shape);
+                CREATE INDEX IF NOT EXISTS idx_request_installment_order_shape_gist 
+                ON request_installment_order USING GIST (shape);
             """)
-            _logger.info("Created spatial index on stock_picking.shape")
+            _logger.info("Created spatial index on request_installment_order.shape")
         except Exception as e:
             _logger.warning("Could not create spatial index: %s", e)
 
         # Verify the setup
         cr.execute("""
-            SELECT COUNT(*) FROM stock_picking 
+            SELECT COUNT(*) FROM request_installment_order 
             WHERE shape IS NOT NULL
         """)
         geom_count = cr.fetchone()[0]
@@ -97,14 +97,14 @@ def uninstall_hook(env):
         cr = env.cr
 
         # Drop spatial indexes
-        cr.execute("DROP INDEX IF EXISTS idx_stock_picking_shape_gist;")
+        cr.execute("DROP INDEX IF EXISTS idx_request_installment_order_shape_gist;")
         _logger.info("Dropped spatial indexes")
 
         # Note: We don't drop the PostGIS extension as it might be used by other modules
         _logger.info("PostGIS extension preserved (may be used by other modules)")
 
         # Clear geometry data (optional - data will be removed with table anyway)
-        cr.execute("UPDATE stock_picking SET shape = NULL WHERE shape IS NOT NULL;")
+        cr.execute("UPDATE request_installment_order SET shape = NULL WHERE shape IS NOT NULL;")
         _logger.info("Cleared PostGIS geometry data")
 
     except Exception as e:
