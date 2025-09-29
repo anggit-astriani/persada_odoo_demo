@@ -6,26 +6,29 @@
             <field name="model">stock.picking</field>
             <field name="arch" type="xml">
                 <geoengine editable="1" default_extent="-20037508,-20037508,20037508,20037508">
-                    <!-- <field name="name"/>
-                    <field name="phone"/>
-                    <field name="email"/>
-                    <field name="description"/> -->
+                    <field name="street"/>
+                    <field name="city"/>
+                    <field name="state_id"/>
+                    <field name="zip"/>
                     <field name="delivered_latitude"/>
                     <field name="delivered_longitude"/>
                     <field name="shape"/>
                     <templates>
                         <t t-name="info_box">
                             <div>
-                                <!-- <h4><field name="name"/></h4>
-                                <div t-if="record.description.value">
-                                    <strong>Description:</strong> <field name="description"/>
+                                <div t-if="record.street.value" style="margin-bottom: 8px;">
+                                    <strong>Street:</strong><br/>
+                                    <span style="font-style: italic;"><field name="street"/></span>
                                 </div>
-                                <div t-if="record.phone.value">
-                                    <strong>Phone:</strong> <field name="phone"/>
+                                <div t-if="record.city.value" style="margin-bottom: 5px;">
+                                    <i class="fa fa-phone" title="City"/> <field name="city"/>
                                 </div>
-                                <div t-if="record.email.value">
-                                    <strong>Email:</strong> <field name="email"/>
-                                </div> -->
+                                <div t-if="record.state_id.value" style="margin-bottom: 5px;">
+                                    <i class="fa fa-envelope" title="State"/> <field name="state"/>
+                                </div>
+                                <div t-if="record.zip.value" style="margin-bottom: 5px;">
+                                    <i class="fa fa-envelope" title="ZIP"/> <field name="zip"/>
+                                </div>
                                 <div t-if="record.delivered_latitude.value and record.delivered_longitude.value">
                                     <strong>Coordinates:</strong>
                                     <field name="delivered_latitude"/>, <field name="delivered_longitude"/>
@@ -43,10 +46,10 @@
             <field name="model">stock.picking</field>
             <field name="arch" type="xml">
                 <geoengine editable="1" default_extent="-20037508,-20037508,20037508,20037508">
-                    <!-- <field name="name"/>
-                    <field name="phone"/>
-                    <field name="email"/>
-                    <field name="description"/> -->
+                    <field name="street"/>
+                    <field name="city"/>
+                    <field name="state_id"/>
+                    <field name="zip"/>
                     <field name="delivered_latitude"/>
                     <field name="delivered_longitude"/>
                     <field name="location_display"/>
@@ -58,16 +61,19 @@
                                 <h4 style="margin: 0 0 10px 0; color: #875A7B;">
                                     <i class="fa fa-user" title="Customer"/> <field name="name"/>
                                 </h4>
-                                <!-- <div t-if="record.description.value" style="margin-bottom: 8px;">
-                                    <strong>Description:</strong><br/>
-                                    <span style="font-style: italic;"><field name="description"/></span>
+                                <div t-if="record.street.value" style="margin-bottom: 8px;">
+                                    <strong>Street:</strong><br/>
+                                    <span style="font-style: italic;"><field name="street"/></span>
                                 </div>
-                                <div t-if="record.phone.value" style="margin-bottom: 5px;">
-                                    <i class="fa fa-phone" title="Phone"/> <field name="phone"/>
+                                <div t-if="record.city.value" style="margin-bottom: 5px;">
+                                    <i class="fa fa-phone" title="City"/> <field name="city"/>
                                 </div>
-                                <div t-if="record.email.value" style="margin-bottom: 5px;">
-                                    <i class="fa fa-envelope" title="Email"/> <field name="email"/>
-                                </div> -->
+                                <div t-if="record.state_id.value" style="margin-bottom: 5px;">
+                                    <i class="fa fa-envelope" title="State"/> <field name="state"/>
+                                </div>
+                                <div t-if="record.zip.value" style="margin-bottom: 5px;">
+                                    <i class="fa fa-envelope" title="ZIP"/> <field name="zip"/>
+                                </div>
                                 <div t-if="record.location_display.value" style="margin-bottom: 5px;">
                                     <i class="fa fa-map-marker" title="Location"/> <field name="location_display"/>
                                 </div>

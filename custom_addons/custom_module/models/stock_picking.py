@@ -28,13 +28,13 @@ class StockPicking(models.Model):
         help='delivered longitude coordinate (manual entry)'
     )
     delivered_latitude = fields.Float(
-        string='Delivered Latitude',
+        string='Destination Latitude',
         digits=(16, 6),
         tracking=True,
         help='Latitude coordinate (manual entry)'
     )
     delivered_longitude =  fields.Float(
-        string='Delivered Longitude',
+        string='Destination Longitude',
         digits=(16, 6),
         tracking=True,
         help='Longitude coordinate (manual entry)'

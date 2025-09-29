@@ -2,7 +2,7 @@
 <templates id="template" xml:space="preserve">
 
     <!-- Dashboard Map Template -->
-    <t t-name="costum_module.CustomerMapDashboard" owl="1">
+    <t t-name="custom_module.CustomerMapDashboard" owl="1">
         <div class="o_customer_map_dashboard" style="height: 100vh; padding: 0; margin: 0;">
             <!-- Loading Overlay -->
             <div t-if="state.loading" class="d-flex justify-content-center align-items-center h-100"
@@ -102,7 +102,7 @@
     </t>
 
     <!-- Map Picker Field Widget Template -->
-    <t t-name="costum_module.MapPickerWidget" owl="1">
+    <t t-name="custom_module.MapPickerWidget" owl="1">
         <div class="o_map_picker_container">
             <!-- Coordinate Input Row -->
             <div class="row mb-3">
