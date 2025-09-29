@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 2. view geoengine -->
+    <record id="view_stock_picking_geoengine" model="ir.ui.view">
+        <field name="name">stock.picking.geoengine</field>
+        <field name="model">stock.picking</field>
+        <field name="arch" type="xml">
+            <geoengine field="shape">
+                <field name="shape"/>
+                <!-- <field name="name"/>
+                <field name="state"/> -->
+            </geoengine>
+        </field>
+    </record>
+    
+    <record id="raster_layer_osm_picking" model="geoengine.raster.layer">
+        <field name="name">OpenStreetMap - Stock Picking</field>
+        <field name="raster_type">osm</field>
+        <field name="view_id" ref="view_stock_picking_geoengine"/>
+        <field name="sequence">1</field>
+    </record>
+
+    <!-- 3. window action yang membuka geoengine -->
+    <record id="action_stock_picking_map" model="ir.actions.act_window">
+        <field name="name">Stock Picking Map</field>
+        <field name="res_model">stock.picking</field>
+        <field name="view_mode">geoengine,tree,form</field>
+        <!-- baris INI yang penting: daftarkan view geoengine-nya -->
+        <field name="view_id" ref="view_stock_picking_geoengine"/>
+        <field name="domain">[('picking_type_code','=','outgoing')]</field>
+        <field name="context">{}</field>
+    </record>
+</odoo>

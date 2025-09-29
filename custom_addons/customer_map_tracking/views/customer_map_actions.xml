@@ -1,13 +1,11 @@
 <odoo>
     <data>
-        <!-- Client Action for JavaScript Dashboard -->
         <record id="action_customer_map_js_dashboard" model="ir.actions.client">
             <field name="name">Interactive Map Dashboard</field>
             <field name="tag">customer_map_tracking.map_dashboard</field>
             <field name="target">current</field>
         </record>
 
-        <!-- Standard GeoEngine Dashboard -->
         <record id="action_customer_map_dashboard" model="ir.actions.act_window">
             <field name="name">Customer Map Dashboard</field>
             <field name="res_model">customer.map</field>
@@ -30,8 +28,7 @@
                 </p>
             </field>
         </record>
-
-        <!-- Enhanced Standard List/Form Action -->
+        
         <record id="action_customer_map" model="ir.actions.act_window">
             <field name="name">Customer Locations</field>
             <field name="res_model">customer.map</field>
@@ -48,56 +45,6 @@
                     Track your customers on an interactive PostGIS map.
                     You can set locations by clicking on the map or entering coordinates manually.
                 </p>
-            </field>
-        </record>
-
-        <!-- Action for Map View Only -->
-        <record id="action_customer_map_geoengine_only" model="ir.actions.act_window">
-            <field name="name">Customer Map (GeoEngine)</field>
-            <field name="res_model">customer.map</field>
-            <field name="view_mode">geoengine</field>
-            <field name="view_id" ref="view_customer_map_geoengine_simple"/>
-            <field name="domain">[('active', '=', True)]</field>
-            <field name="context">{
-                'search_default_active': 1
-            }</field>
-        </record>
-
-        <!-- Server Action to Check PostGIS Status -->
-        <record id="action_check_postgis_status" model="ir.actions.server">
-            <field name="name">Check PostGIS Status</field>
-            <field name="model_id" ref="model_customer_map"/>
-            <field name="state">code</field>
-            <field name="code">
-# Check PostGIS status and customer data
-env.cr.execute("SELECT EXISTS (SELECT 1 FROM pg_extension WHERE extname = 'postgis');")
-postgis_available = env.cr.fetchone()[0]
-
-env.cr.execute("SELECT COUNT(*) FROM customer_map WHERE latitude IS NOT NULL AND longitude IS NOT NULL")
-count_coords = env.cr.fetchone()[0]
-
-env.cr.execute("SELECT COUNT(*) FROM customer_map WHERE shape IS NOT NULL")
-count_shapes = env.cr.fetchone()[0]
-
-message = f"""
-PostGIS Status Check:
-- PostGIS Extension: {'Available' if postgis_available else 'NOT INSTALLED'}
-- Customers with coordinates: {count_coords}
-- Customers with PostGIS shapes: {count_shapes}
-
-Database Status: {env.cr.connection.dsn if hasattr(env.cr.connection, 'dsn') else 'Unknown'}
-"""
-
-action = {
-    'type': 'ir.actions.client',
-    'tag': 'display_notification',
-    'params': {
-        'title': 'PostGIS System Status',
-        'message': message,
-        'type': 'info',
-        'sticky': True,
-    }
-}
             </field>
         </record>
     </data>

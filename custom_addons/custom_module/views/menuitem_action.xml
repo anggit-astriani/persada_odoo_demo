@@ -57,4 +57,33 @@
         <field name="view_id" ref="custom_module.checklist_instalasi_lapangan_form_view"/>
         <field name="act_window_id" ref="custom_module.checklist_instalasi_lapangan_menu_action"/>
     </record>
+
+    <record id="action_customer_map_js_dashboard" model="ir.actions.client">
+        <field name="name">Interactive Map Dashboard</field>
+        <field name="tag">custom_module.map_dashboard</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="action_customer_map_dashboard" model="ir.actions.act_window">
+            <field name="name">Customer Map Dashboard</field>
+            <field name="res_model">stock.picking</field>
+            <field name="view_mode">geoengine,tree,form</field>
+            <field name="view_id" ref="view_customer_map_geoengine_simple"/>
+            <field name="domain">[('active', '=', True)]</field>
+            <field name="context">{
+                'create': True,
+                'edit': True,
+                'delete': False,
+                'search_default_active': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first customer location!
+                </p>
+                <p>
+                    Track your customers on an interactive PostGIS map.
+                    Click on the map to create new locations or edit existing ones.
+                </p>
+            </field>
+    </record>
 </odoo>

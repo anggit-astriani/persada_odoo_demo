@@ -8,8 +8,18 @@ class ChecklistInstalasiLapangan(models.Model):
     delivery_id = fields.Many2one('stock.picking', string='Delivery', domain="[('picking_type_id.code','=','outgoing')]", required=True, readonly=True)
     user_id = fields.Many2one('res.users', string='User', default=lambda self: self.env.user, readonly=True)
     officer_id = fields.Many2one('res.partner', string='Officer', domain=[('is_company', '=', False)])
-    latitude = fields.Char(string='Latitude')
-    longitude = fields.Char(string='Longitude')
+    latitude = fields.Float(
+        string='Latitude',
+        digits=(16, 6),
+        tracking=True,
+        help='Latitude coordinate (manual entry)'
+    )
+    longitude = fields.Float(
+        string='Longitude',
+        digits=(16, 6),
+        tracking=True,
+        help='Latitude coordinate (manual entry)'
+    )
     information = fields.Text(string='Information')
     product_line_ids = fields.One2many('checklist.instalasi.lapangan.line', 'checklist_id', string="Products")
     image_line_ids = fields.One2many(

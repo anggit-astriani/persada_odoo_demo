@@ -8,8 +8,18 @@ class ChecklistInstalasiLapanganWizard(models.TransientModel):
     delivery_id = fields.Many2one('stock.picking', string='Delivery Order', readonly=True)
     user_id = fields.Many2one('res.users', string='User', readonly=True)
     officer_id = fields.Many2one('res.partner', string='Officer', domain=[('is_company', '=', False)])
-    latitude = fields.Char(string='Delivered Latitude')
-    longitude = fields.Char(string='Delivered Longitude')
+    latitude = fields.Float(
+        string='Latitude',
+        digits=(16, 6),
+        tracking=True,
+        help='Latitude coordinate (manual entry)'
+    )
+    longitude = fields.Float(
+        string='Longitude',
+        digits=(16, 6),
+        tracking=True,
+        help='Latitude coordinate (manual entry)'
+    )
     information = fields.Text(string='Information')
     product_line_ids = fields.One2many('checklist.instalasi.lapangan.wizard.line', 'wizard_id', string="Products")
 

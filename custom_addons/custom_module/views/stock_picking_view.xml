@@ -22,10 +22,10 @@
                                     <field name="country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
                                 </div>
                             </div>
-                            <field name="destination_latitude"/>
-                            <field name="destination_longitude"/>
-                            <field name="delivered_latitude"/>
-                            <field name="delivered_longitude"/>
+                            <field name="destination_latitude" digits="[16,6]"/>
+                            <field name="destination_longitude" digits="[16,6]"/>
+                            <field name="delivered_latitude" digits="[16,6]"/>
+                            <field name="delivered_longitude" digits="[16,6]"/>
                         </group>
                         <group>
                             <!-- <field name="proof_of_delivery_before"
@@ -104,8 +104,8 @@
                                 <field name="receipt_code_product"/>
                                 <field name="warehouse_id"/>
                                 <field name="receipt_id"/>
-                                <field name="is_returned"/>
-                                <field name="return_id"/>
+                                <!-- <field name="is_returned"/>
+                                <field name="return_id"/> -->
                             </tree>
                         </field>
                     </page>
@@ -132,6 +132,55 @@
                             </tree>
                         </field>
                     </page> -->
+                    <page string="Location" name="location">
+                            <group string="Interactive Map" name="map_group">
+                                <div class="alert alert-info" role="alert">
+                                    <i class="fa fa-info-circle"/>
+                                    Click on the map to set the customer location. You can drag the marker to adjust the position.
+                                </div>
+
+                                <field name="shape"
+                                       widget="geo_edit_map"
+                                       nolabel="1"
+                                       options="{'edit_map_height': 400, 'edit_map_width': '100%'}"
+                                       style="height: 400px; width: 100%;"/>
+                            </group>
+
+                            <group string="Manual Coordinates Entry" name="coords_group">
+                                <div class="alert alert-warning" role="alert">
+                                    <i class="fa fa-exclamation-triangle"/>
+                                    You can also enter coordinates manually. This will update the map location.
+                                </div>
+
+                                <!-- <group>
+                                    <field name="delivered_latitude" digits="[16,6]"/>
+                                    <field name="delivered_longitude" digits="[16,6]"/>
+                                </group> -->
+
+                                <group>
+                                    <button string="Update Map from Coordinates"
+                                            name="action_set_location_from_coordinates"
+                                            type="object"
+                                            class="btn-info"
+                                            icon="fa-map-marker"/>
+                                    <button string="Clear All Location Data"
+                                            name="action_clear_location"
+                                            type="object"
+                                            class="btn-warning"
+                                            icon="fa-trash"
+                                            confirm="Are you sure you want to clear all location data?"/>
+                                </group>
+                            </group>
+
+                            <group string="Location Tools" name="tools_group" groups="base.group_system">
+                                <div class="alert alert-secondary" role="alert">
+                                    <i class="fa fa-wrench"/>
+                                    Advanced tools for location management.
+                                </div>
+
+                                <field name="geo_wkt" readonly="1" string="PostGIS WKT Geometry"/>
+                            </group>
+                        </page>
                 </xpath>
             </field>
         </record>

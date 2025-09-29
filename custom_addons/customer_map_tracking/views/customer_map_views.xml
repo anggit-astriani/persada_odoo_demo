@@ -1,5 +1,4 @@
 <odoo>
-    <!-- Tree View -->
     <record id="view_customer_map_tree" model="ir.ui.view">
         <field name="name">customer.map.tree</field>
         <field name="model">customer.map</field>
@@ -14,37 +13,19 @@
         </field>
     </record>
 
-    <!-- Form View with PostGIS Integration -->
     <record id="view_customer_map_form" model="ir.ui.view">
         <field name="name">customer.map.form</field>
         <field name="model">customer.map</field>
         <field name="arch" type="xml">
             <form string="Customer Location">
-                <header>
-                    <button name="action_open_map_view"
-                            string="View on Map"
-                            type="object"
-                            class="btn-primary"
-                            icon="fa-map"/>
-                    <button name="action_geocode_address"
-                            string="Geocode Address"
-                            type="object"
-                            class="btn-secondary"
-                            icon="fa-search"/>
-                    <field name="active" widget="boolean_button" options="{'terminology': 'active'}"/>
-                </header>
-
                 <sheet>
-                    <!-- Header -->
                     <div class="oe_title">
                         <h1>
                             <field name="name" class="o_text_overflow" placeholder="Customer Name..."/>
                         </h1>
                     </div>
 
-                    <!-- Main Content -->
                     <notebook>
-                        <!-- Basic Information -->
                         <page string="Information" name="information">
                             <group>
                                 <group string="Contact Details">
@@ -59,9 +40,7 @@
                             </group>
                         </page>
 
-                        <!-- Location Tab with PostGIS Map -->
                         <page string="Location" name="location">
-                            <!-- PostGIS Map Editor -->
                             <group string="Interactive Map" name="map_group">
                                 <div class="alert alert-info" role="alert">
                                     <i class="fa fa-info-circle"/>
@@ -75,7 +54,6 @@
                                        style="height: 400px; width: 100%;"/>
                             </group>
 
-                            <!-- Manual Coordinate Entry -->
                             <group string="Manual Coordinates Entry" name="coords_group">
                                 <div class="alert alert-warning" role="alert">
                                     <i class="fa fa-exclamation-triangle"/>
@@ -102,7 +80,6 @@
                                 </group>
                             </group>
 
-                            <!-- Location Tools -->
                             <group string="Location Tools" name="tools_group" groups="base.group_system">
                                 <div class="alert alert-secondary" role="alert">
                                     <i class="fa fa-wrench"/>
@@ -113,7 +90,6 @@
                             </group>
                         </page>
 
-                        <!-- History/Notes Tab -->
                         <page string="Notes" name="notes">
                             <group>
                                 <field name="description" nolabel="1" placeholder="Additional notes and information about this customer..."/>
@@ -125,7 +101,6 @@
         </field>
     </record>
 
-    <!-- Search View -->
     <record id="view_customer_map_search" model="ir.ui.view">
         <field name="name">customer.map.search</field>
         <field name="model">customer.map</field>
@@ -160,26 +135,6 @@
                             context="{'group_by': 'active'}"/>
                 </group>
             </search>
-        </field>
-    </record>
-
-    <!-- Main List/Form Action -->
-    <record id="action_customer_map" model="ir.actions.act_window">
-        <field name="name">Customer Locations</field>
-        <field name="res_model">customer.map</field>
-        <field name="view_mode">tree,form</field>
-        <field name="search_view_id" ref="view_customer_map_search"/>
-        <field name="context">{
-            'search_default_active': 1
-        }</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                Create your first customer location!
-            </p>
-            <p>
-                Track your customers on an interactive PostGIS map.
-                You can set locations by clicking on the map or entering coordinates manually.
-            </p>
         </field>
     </record>
 </odoo>
