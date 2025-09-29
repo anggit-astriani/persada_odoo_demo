@@ -1,0 +1,37 @@
+
+<odoo>
+    <record id="action_request_installment_order" model="ir.actions.act_window">
+        <field name="name">Request Installment Orders</field>
+        <field name="res_model">request.installment.order</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_customer_map_js_dashboard" model="ir.actions.client">
+        <field name="name">Interactive Map Dashboard</field>
+        <field name="tag">request_installment_order.map_dashboard</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="action_customer_map_dashboard" model="ir.actions.act_window">
+            <field name="name">Customer Map Dashboard</field>
+            <field name="res_model">request.installment.order</field>
+            <field name="view_mode">geoengine,tree,form</field>
+            <field name="view_id" ref="request_installment_order.view_customer_map_geoengine_simple"/>
+            <field name="domain">[('active', '=', True)]</field>
+            <field name="context">{
+                'create': True,
+                'edit': True,
+                'delete': False,
+                'search_default_active': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first customer location!
+                </p>
+                <p>
+                    Track your customers on an interactive PostGIS map.
+                    Click on the map to create new locations or edit existing ones.
+                </p>
+            </field>
+    </record>
+</odoo>

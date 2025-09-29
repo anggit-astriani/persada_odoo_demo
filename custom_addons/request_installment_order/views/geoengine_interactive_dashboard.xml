@@ -1,0 +1,132 @@
+<odoo>
+    <data>
+        <!-- Simple GeoEngine View -->
+        <record id="view_customer_map_geoengine_simple" model="ir.ui.view">
+            <field name="name">request.installment.order.geoengine.simple</field>
+            <field name="model">request.installment.order</field>
+            <field name="arch" type="xml">
+                <geoengine editable="1" default_extent="-20037508,-20037508,20037508,20037508">
+                    <field name="street"/>
+                    <field name="city"/>
+                    <field name="state_id"/>
+                    <field name="zip"/>
+                    <field name="latitude"/>
+                    <field name="longitude"/>
+                    <field name="shape"/>
+                    <templates>
+                        <t t-name="info_box">
+                            <div>
+                                <div t-if="record.street.value" style="margin-bottom: 8px;">
+                                    <strong>Street:</strong><br/>
+                                    <span style="font-style: italic;"><field name="street"/></span>
+                                </div>
+                                <div t-if="record.city.value" style="margin-bottom: 5px;">
+                                    <i class="fa fa-phone" title="City"/> <field name="city"/>
+                                </div>
+                                <!-- <div t-if="record.state_id.value" style="margin-bottom: 5px;">
+                                    <i class="fa fa-envelope" title="State"/> <field name="state"/> -->
+                                <!-- </div> -->
+                                <div t-if="record.zip.value" style="margin-bottom: 5px;">
+                                    <i class="fa fa-envelope" title="ZIP"/> <field name="zip"/>
+                                </div>
+                                <div t-if="record.latitude.value and record.longitude.value">
+                                    <strong>Coordinates:</strong>
+                                    <field name="latitude"/>, <field name="longitude"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </geoengine>
+            </field>
+        </record>
+
+        <!-- Detailed GeoEngine View -->
+        <record id="view_customer_map_geoengine" model="ir.ui.view">
+            <field name="name">request.installment.order.geoengine</field>
+            <field name="model">request.installment.order</field>
+            <field name="arch" type="xml">
+                <geoengine editable="1" default_extent="-20037508,-20037508,20037508,20037508">
+                    <field name="street"/>
+                    <field name="city"/>
+                    <field name="state_id"/>
+                    <field name="zip"/>
+                    <field name="latitude"/>
+                    <field name="longitude"/>
+                    <field name="location_display"/>
+                    <field name="active"/>
+                    <field name="shape"/>
+                    <templates>
+                        <t t-name="info_box">
+                            <div style="min-width: 200px;">
+                                <h4 style="margin: 0 0 10px 0; color: #875A7B;">
+                                    <i class="fa fa-user" title="Customer"/> <field name="title"/>
+                                </h4>
+                                <div t-if="record.street.value" style="margin-bottom: 8px;">
+                                    <strong>Street:</strong><br/>
+                                    <span style="font-style: italic;"><field name="street"/></span>
+                                </div>
+                                <div t-if="record.city.value" style="margin-bottom: 5px;">
+                                    <i class="fa fa-phone" title="City"/> <field name="city"/>
+                                </div>
+                                <!-- <div t-if="record.state_id.value" style="margin-bottom: 5px;">
+                                    <i class="fa fa-envelope" title="State"/> <field name="state"/>
+                                </div>
+                                <div t-if="record.zip.value" style="margin-bottom: 5px;">
+                                    <i class="fa fa-envelope" title="ZIP"/> <field name="zip"/>
+                                </div> -->
+                                <div t-if="record.location_display.value" style="margin-bottom: 5px;">
+                                    <i class="fa fa-map-marker" title="Location"/> <field name="location_display"/>
+                                </div>
+                                <div style="margin-top: 10px;">
+                                    <span t-if="record.active.value" class="badge badge-success">Active</span>
+                                    <span t-if="!record.active.value" class="badge badge-secondary">Inactive</span>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </geoengine>
+            </field>
+        </record>
+
+        <!-- Vector Layer for Detailed View -->
+        <record id="customer_map_vector_layer_detailed" model="geoengine.vector.layer">
+            <field name="name">Customer Details</field>
+            <field name="geo_field_id" search="[('model','=','request.installment.order'),('name','=','shape')]"/>
+            <field name="view_id" ref="request_installment_order.view_customer_map_geoengine"/>
+            <field name="geo_repr">basic</field>
+            <field name="active_on_startup" eval="True"/>
+            <field name="classification">unique</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <!-- OSM Raster for Detailed View -->
+        <record id="customer_map_raster_osm_detailed" model="geoengine.raster.layer">
+            <field name="name">OpenStreetMap</field>
+            <field name="raster_type">osm</field>
+            <field name="view_id" ref="request_installment_order.view_customer_map_geoengine"/>
+            <field name="overlay" eval="False"/>
+            <field name="sequence">1</field>
+        </record>
+
+        <!-- Actions -->
+        <record id="action_customer_map_geoengine" model="ir.actions.act_window">
+            <field name="name">Customer Map (Interactive)</field>
+            <field name="res_model">request.installment.order</field>
+            <field name="view_mode">geoengine,tree,form</field>
+            <field name="view_id" ref="request_installment_order.view_customer_map_geoengine"/>
+            <!-- <field name="search_view_id" ref="view_customer_map_search"/> -->
+            <field name="domain">[('active', '=', True)]</field>
+            <field name="context">{
+                'search_default_active': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first customer location!
+                </p>
+                <p>
+                    Click on the map to create new customer locations or edit existing ones.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

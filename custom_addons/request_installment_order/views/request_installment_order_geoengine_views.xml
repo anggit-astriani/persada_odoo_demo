@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- GeoEngine View untuk Map -->
+    <record id="view_request_installment_order_geoengine" model="ir.ui.view">
+        <field name="name">request.installment.order.geoengine</field>
+        <field name="model">request.installment.order</field>
+        <field name="arch" type="xml">
+            <geoengine>
+                <field name="description"/>
+                <field name="latitude"/>
+                <field name="longitude"/>
+                <field name="shape"/>
+                <field name="title"/>
+                <field name="contact_id"/>
+                <field name="status"/>
+                <field name="active"/>
+            </geoengine>
+        </field>
+    </record>
+    
+    <!-- Raster Layer Configuration (Background Map) -->
+    <record id="raster_layer_osm_request_installment" model="geoengine.raster.layer">
+        <field name="name">OpenStreetMap - Request Installment</field>
+        <field name="raster_type">osm</field>
+        <field name="view_id" ref="request_installment_order.view_request_installment_order_geoengine"/>
+        <field name="sequence">1</field>
+    </record>
+
+    <!-- Action untuk membuka Map View -->
+    <record id="action_request_installment_order_map" model="ir.actions.act_window">
+        <field name="name">Request Installment Map</field>
+        <field name="res_model">request.installment.order</field>
+        <field name="view_mode">geoengine,tree,form</field>
+        <field name="context">{}</field>
+    </record>
+</odoo>

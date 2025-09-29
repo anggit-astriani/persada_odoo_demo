@@ -1,0 +1,14 @@
+<odoo>
+    <menuitem id="menu_request_installment_order_root" name="Request Installments"/>
+
+    <menuitem id="menu_request_installment_order"
+            name="Orders"
+            parent="request_installment_order.menu_request_installment_order_root"
+            action="request_installment_order.action_request_installment_order"/>
+    
+    <menuitem id="menu_customer_map_js_dashboard"
+            name="Interactive Dashboard"
+            parent="request_installment_order.menu_request_installment_order_root"
+            action="request_installment_order.action_customer_map_js_dashboard"
+            sequence="23"/>
+</odoo>

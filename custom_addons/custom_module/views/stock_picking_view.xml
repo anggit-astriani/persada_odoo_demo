@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='picking_properties']" position="after">
                     <group>
-                        <group>
+                        <group invisible="picking_type_code != 'outgoing'">
                             <span class="o_form_label o_td_label">
                                 <label for="street" string="Address" style="font-weight:bold;" nolabel="1"/>
                             </span>
@@ -39,7 +39,8 @@
                             <field name="shipping_document"
                                 widget="image"
                                 filename="shipping_document_filename"
-                                style="max-width: 150px; max-height: 150px;"/>
+                                style="max-width: 150px; max-height: 150px;"
+                                invisible="picking_type_code != 'outgoing'"/>
                         </group>
                     </group>
                 </xpath>
@@ -132,7 +133,7 @@
                             </tree>
                         </field>
                     </page> -->
-                    <page string="Location" name="location">
+                    <page string="Location" name="location" invisible="picking_type_code != 'outgoing'">
                             <group string="Interactive Map" name="map_group">
                                 <div class="alert alert-info" role="alert">
                                     <i class="fa fa-info-circle"/>
