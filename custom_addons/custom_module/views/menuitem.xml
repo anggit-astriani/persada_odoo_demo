@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <menuitem id="checklist_instalasi_menu_master"
+            name="Master Data"
+            parent="stock.menu_stock_root"
+            sequence="23"/>
+
+    <menuitem id="checklist_instalasi_product_menu"
+            name="Checklist Instalasi Product"
+            parent="custom_module.checklist_instalasi_menu_master"
+            action="custom_module.checklist_instalasi_product_menu_action"
+            sequence="10"/>
+
+    <menuitem id="checklist_instalasi_product_criteria_menu"
+            name="Checklist Instalasi Product Criteria"
+            parent="custom_module.checklist_instalasi_menu_master"
+            action="custom_module.checklist_instalasi_product_criteria_menu_action"
+            sequence="20"/>
+
+     <menuitem id="checklist_instalasi_lapangan_menu"
+            name="Checklist Instalasi Lapangan"
+            parent="custom_module.checklist_instalasi_menu_master"
+            action="custom_module.checklist_instalasi_lapangan_menu_action"
+            sequence="20"/>
+</odoo>

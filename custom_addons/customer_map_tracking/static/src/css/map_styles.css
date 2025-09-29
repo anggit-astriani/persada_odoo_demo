@@ -1,0 +1,494 @@
+/* ===== CUSTOMER MAP DASHBOARD STYLES ===== */
+.o_customer_map_dashboard {
+    position: relative;
+    overflow: hidden;
+    background: #f8f9fa;
+}
+
+.o_customer_map_dashboard .position-absolute .card {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.o_customer_map_dashboard .card-body {
+    font-size: 13px;
+}
+
+.o_customer_map_dashboard .btn-group-vertical .btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== LEAFLET CUSTOMIZATION ===== */
+.leaflet-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.leaflet-popup-content {
+    margin: 20px;
+    line-height: 1.5;
+    font-size: 14px;
+    max-width: 280px;
+}
+
+.leaflet-popup-tip {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Custom customer marker styling */
+.custom-customer-marker {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.custom-customer-marker:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+/* ===== POPUP STYLING ===== */
+.customer-popup h4 {
+    color: #1f77b4;
+    border-bottom: 2px solid #1f77b4;
+    padding-bottom: 8px;
+    margin-bottom: 15px !important;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.customer-popup h4 i {
+    margin-right: 8px;
+    font-size: 14px;
+}
+
+.customer-popup p {
+    margin: 8px 0;
+    font-size: 13px;
+    color: #495057;
+    line-height: 1.4;
+}
+
+.customer-popup p strong {
+    color: #212529;
+    font-weight: 600;
+}
+
+.customer-popup .btn {
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: all 0.15s ease-in-out;
+}
+
+.customer-popup .btn-primary {
+    background-color: #1f77b4;
+    border-color: #1f77b4;
+    color: white;
+}
+
+.customer-popup .btn-primary:hover {
+    background-color: #1565c0;
+    border-color: #1565c0;
+    transform: translateY(-1px);
+}
+
+.customer-popup .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+}
+
+.customer-popup .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+    transform: translateY(-1px);
+}
+
+.customer-popup a[href^="tel:"] {
+    color: #28a745;
+    text-decoration: none;
+}
+
+.customer-popup a[href^="mailto:"] {
+    color: #17a2b8;
+    text-decoration: none;
+}
+
+.customer-popup a[href^="tel:"]:hover,
+.customer-popup a[href^="mailto:"]:hover {
+    text-decoration: underline;
+}
+
+/* Status badges */
+.badge {
+    display: inline-block;
+    padding: 0.25em 0.6em;
+    font-size: 0.75em;
+    font-weight: 600;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.375rem;
+}
+
+.badge-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.badge-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+/* ===== MAP PICKER WIDGET STYLES ===== */
+.o_map_picker_container {
+    margin-bottom: 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+.o_map_picker {
+    border: 2px solid #e6e6e6;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: white;
+    position: relative;
+}
+
+.map-picker-canvas {
+    width: 100%;
+    height: 400px !important;
+    min-height: 400px !important;
+}
+
+/* Form styling within map picker */
+.o_map_picker_container .form-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 5px;
+    font-size: 13px;
+}
+
+.o_map_picker_container .form-control {
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 14px;
+    transition: all 0.15s ease-in-out;
+}
+
+.o_map_picker_container .form-control:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.o_map_picker_container .btn {
+    font-size: 12px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.15s ease-in-out;
+}
+
+.o_map_picker_container .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== LOADING STATES ===== */
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+    color: #1f77b4;
+}
+
+.fa-spin {
+    animation: fa-spin 2s infinite linear;
+}
+
+@keyframes fa-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ===== LEAFLET CONTROLS CUSTOMIZATION ===== */
+.leaflet-control-custom {
+    background: white;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+
+.leaflet-control-custom:hover {
+    background: #f8f9fa;
+    border-color: rgba(0, 0, 0, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.leaflet-bar a,
+.leaflet-bar a:hover {
+    border-bottom: none;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== MARKER CLUSTERING CUSTOMIZATION ===== */
+.marker-cluster-small {
+    background-color: rgba(31, 119, 180, 0.8);
+    border: 3px solid rgba(31, 119, 180, 1);
+}
+
+.marker-cluster-small div {
+    background-color: rgba(31, 119, 180, 0.8);
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+}
+
+.marker-cluster-medium {
+    background-color: rgba(255, 193, 7, 0.8);
+    border: 3px solid rgba(255, 193, 7, 1);
+}
+
+.marker-cluster-medium div {
+    background-color: rgba(255, 193, 7, 0.8);
+    width: 38px;
+    height: 38px;
+    border-radius: 19px;
+}
+
+.marker-cluster-large {
+    background-color: rgba(220, 53, 69, 0.8);
+    border: 3px solid rgba(220, 53, 69, 1);
+}
+
+.marker-cluster-large div {
+    background-color: rgba(220, 53, 69, 0.8);
+    width: 44px;
+    height: 44px;
+    border-radius: 22px;
+}
+
+/* Cluster text styling */
+.marker-cluster div span {
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+    .o_customer_map_dashboard .position-absolute .card {
+        max-width: 200px;
+    }
+
+    .o_customer_map_dashboard .btn-group-vertical .btn {
+        width: 35px;
+        height: 35px;
+        font-size: 12px;
+    }
+
+    .customer-popup {
+        min-width: 200px !important;
+    }
+
+    .leaflet-popup-content {
+        margin: 15px;
+        max-width: 200px;
+    }
+
+    .o_map_picker_container {
+        padding: 15px;
+    }
+
+    .map-picker-canvas {
+        height: 300px !important;
+    }
+
+    .o_map_picker_container .btn-group {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .o_map_picker_container .btn {
+        margin-bottom: 5px;
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .map-picker-canvas {
+        height: 250px !important;
+    }
+
+    .o_customer_map_dashboard .position-absolute .card .card-body {
+        padding: 8px;
+        font-size: 11px;
+    }
+
+    .leaflet-popup-content {
+        margin: 10px;
+        font-size: 12px;
+    }
+
+    .customer-popup h4 {
+        font-size: 14px;
+    }
+}
+
+/* ===== ACCESSIBILITY IMPROVEMENTS ===== */
+.leaflet-container:focus {
+    outline: 2px solid #0d6efd;
+    outline-offset: 2px;
+}
+
+.btn:focus,
+.form-control:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .o_map_picker,
+    .leaflet-popup-content-wrapper {
+        border: 3px solid #000;
+    }
+
+    .custom-customer-marker div {
+        border: 4px solid #000 !important;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .o_customer_map_dashboard {
+        background: #1a1a1a;
+    }
+
+    .o_customer_map_dashboard .card {
+        background: rgba(33, 37, 41, 0.95) !important;
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.125);
+    }
+
+    .o_map_picker_container {
+        background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+        border-color: #444;
+        color: #fff;
+    }
+}
+
+/* ===== ERROR AND EMPTY STATES ===== */
+.o_customer_map_dashboard .alert-danger {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.25);
+}
+
+.o_customer_map_dashboard .text-muted {
+    color: #6c757d !important;
+}
+
+.fa-4x {
+    font-size: 4em;
+    opacity: 0.3;
+}
+
+/* ===== ANIMATION ENHANCEMENTS ===== */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.o_customer_map_dashboard .card {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.custom-customer-marker div {
+    transition: all 0.2s ease-in-out;
+}
+
+.custom-customer-marker:hover div {
+    transform: scale(1.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* ===== FORM INTEGRATION IMPROVEMENTS ===== */
+.o_field_widget.o_field_map_picker {
+    width: 100% !important;
+    margin-bottom: 0;
+}
+
+.o_form_view .o_map_picker_container {
+    margin-bottom: 0;
+    border: 1px solid #ced4da;
+}
+
+/* Location display field styling */
+.o_field_char[name="location_display"] {
+    background-color: #e9ecef !important;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #495057;
+    font-weight: 500;
+}
+
+/* Success feedback */
+.has-success .form-control {
+    border-color: #28a745 !important;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25) !important;
+}
+
+/* Error feedback */
+.has-error .form-control {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 5px;
+    font-weight: 500;
+}

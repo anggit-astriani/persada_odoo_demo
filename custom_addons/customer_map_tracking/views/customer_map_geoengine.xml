@@ -1,0 +1,77 @@
+<odoo>
+    <!-- 3.a  GeoEngine view -->
+    <record id="customer_map_geoengine_view" model="ir.ui.view">
+        <field name="name">customer.map.geo</field>
+        <field name="model">customer.map</field>
+        <field name="arch" type="xml">
+            <geoengine editable="1">
+                <field name="display_name"/>
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="shape"/>
+                <templates>
+                    <t t-name="info_box">
+                        <b>Name: <field name="name"/></b>
+                        <ul>
+                            <li t-if="record.phone.value">Phone: <field name="phone"/></li>
+                            <li t-if="record.email.value">Email: <field name="email"/></li>
+                        </ul>
+                    </t>
+                </templates>
+            </geoengine>
+        </field>
+        <field name="model">customer.map</field>
+    </record>
+
+    <!-- 3.b  Vector layer (point) -->
+    <record id="customer_map_vector_layer" model="geoengine.vector.layer">
+        <field name="name">Customer Location</field>
+        <field name="geo_field_id" search="[('model','=','customer.map'),('name','=','shape')]"/>
+        <field name="view_id" ref="customer_map_geoengine_view"/>
+        <field name="geo_repr">basic</field>
+        <field name="active_on_startup">True</field>
+        <field name="classification">unique</field>
+    </record>
+
+    <!-- 3.c  Raster layer (OSM) -->
+    <record id="customer_map_raster_osm" model="geoengine.raster.layer">
+        <field name="name">Open Street Map</field>
+        <field name="raster_type">osm</field>
+        <field name="view_id" ref="customer_map_geoengine_view"/>
+        <field name="overlay" eval="0"/>
+    </record>
+
+    <!-- 3.d  Action yang memasukkan mode geoengine -->
+    <record id="action_customer_map_geo" model="ir.actions.act_window">
+        <field name="name">Customer Map (Geo)</field>
+        <field name="res_model">customer.map</field>
+        <field name="view_mode">tree,form,geoengine</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a customer and set its location on the map.
+            </p>
+        </field>
+    </record>
+
+    <!-- 3.e  Menambahkan tab Map di form agar bisa edit -->
+    <record id="view_customer_map_form_geo" model="ir.ui.view">
+        <field name="name">customer.map.form.inherit.geo</field>
+        <field name="model">customer.map</field>
+        <field name="inherit_id" ref="view_customer_map_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Map" name="map">
+                    <button string="Geocode &amp; set location"
+                            name="geo_localize"
+                            type="object"
+                            icon="fa-map-marker"/>
+                    <field name="shape" widget="geo_edit_map"
+                           nolabel="1"
+                           colspan="2"
+                           style="height:500px"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

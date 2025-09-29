@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_customer_map_user,Customer Map User,model_customer_map,customer_map_tracking.group_customer_map_user,1,1,1,0
+access_customer_map_manager,Customer Map Manager,model_customer_map,customer_map_tracking.group_customer_map_manager,1,1,1,1
+access_geoengine_vector_layer_user,GeoEngine Vector Layer User,base_geoengine.model_geoengine_vector_layer,customer_map_tracking.group_customer_map_user,1,0,0,0
+access_geoengine_raster_layer_user,GeoEngine Raster Layer User,base_geoengine.model_geoengine_raster_layer,customer_map_tracking.group_customer_map_user,1,0,0,0
+access_geoengine_vector_layer_manager,GeoEngine Vector Layer Manager,base_geoengine.model_geoengine_vector_layer,customer_map_tracking.group_customer_map_manager,1,1,1,1
+access_geoengine_raster_layer_manager,GeoEngine Raster Layer Manager,base_geoengine.model_geoengine_raster_layer,customer_map_tracking.group_customer_map_manager,1,1,1,1

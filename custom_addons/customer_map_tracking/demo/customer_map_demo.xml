@@ -1,0 +1,93 @@
+<odoo>
+    <data>
+        <record id="customer_demo_jakarta_1" model="customer.map">
+            <field name="name">Jakarta Tech Center</field>
+            <field name="description">Main technology hub in Jakarta</field>
+            <field name="phone">+62-21-1234567</field>
+            <field name="email">info@jakartaTech.co.id</field>
+            <field name="latitude">-6.200000</field>
+            <field name="longitude">106.816666</field>
+        </record>
+
+        <record id="customer_demo_bandung" model="customer.map">
+            <field name="name">Bandung Tech Hub</field>
+            <field name="description">Technology company in Bandung</field>
+            <field name="phone">+62-22-1234567</field>
+            <field name="email">info@bandungtech.co.id</field>
+            <field name="latitude">-6.917464</field>
+            <field name="longitude">107.619123</field>
+        </record>
+
+        <record id="customer_demo_surabaya" model="customer.map">
+            <field name="name">Surabaya Marine Services</field>
+            <field name="description">Marine services in Surabaya port</field>
+            <field name="phone">+62-31-2345678</field>
+            <field name="email">marine@surabaya.co.id</field>
+            <field name="latitude">-7.257472</field>
+            <field name="longitude">112.752090</field>
+        </record>
+
+        <record id="customer_demo_medan" model="customer.map">
+            <field name="name">Medan Palm Oil</field>
+            <field name="description">Palm oil processing in Medan</field>
+            <field name="phone">+62-61-3456789</field>
+            <field name="email">palmoil@medan.id</field>
+            <field name="latitude">3.595196</field>
+            <field name="longitude">98.672226</field>
+        </record>
+
+        <record id="customer_demo_makassar" model="customer.map">
+            <field name="name">Makassar Fishing Co</field>
+            <field name="description">Fishing company in Makassar</field>
+            <field name="phone">+62-411-4567890</field>
+            <field name="email">fishing@makassar.com</field>
+            <field name="latitude">-5.147665</field>
+            <field name="longitude">119.432732</field>
+        </record>
+
+        <record id="customer_demo_denpasar" model="customer.map">
+            <field name="name">Bali Tourism Office</field>
+            <field name="description">Tourism management in Denpasar</field>
+            <field name="phone">+62-361-234567</field>
+            <field name="email">tourism@bali.id</field>
+            <field name="latitude">-8.670458</field>
+            <field name="longitude">115.212629</field>
+        </record>
+
+        <record id="customer_demo_yogyakarta" model="customer.map">
+            <field name="name">Yogya Cultural Center</field>
+            <field name="description">Cultural heritage management</field>
+            <field name="phone">+62-274-567890</field>
+            <field name="email">culture@yogya.id</field>
+            <field name="latitude">-7.797068</field>
+            <field name="longitude">110.370529</field>
+        </record>
+
+        <record id="customer_demo_semarang" model="customer.map">
+            <field name="name">Semarang Port Authority</field>
+            <field name="description">Port management and logistics</field>
+            <field name="phone">+62-24-345678</field>
+            <field name="email">port@semarang.id</field>
+            <field name="latitude">-6.966667</field>
+            <field name="longitude">110.416664</field>
+        </record>
+
+        <record id="customer_demo_balikpapan" model="customer.map">
+            <field name="name">Balikpapan Oil Refinery</field>
+            <field name="description">Oil refining and petrochemicals</field>
+            <field name="phone">+62-542-123456</field>
+            <field name="email">refinery@balikpapan.co.id</field>
+            <field name="latitude">-1.267403</field>
+            <field name="longitude">116.831554</field>
+        </record>
+
+        <record id="customer_demo_palembang" model="customer.map">
+            <field name="name">Palembang River Transport</field>
+            <field name="description">River transportation services</field>
+            <field name="phone">+62-711-987654</field>
+            <field name="email">transport@palembang.id</field>
+            <field name="latitude">-2.990934</field>
+            <field name="longitude">104.756554</field>
+        </record>
+    </data>
+</odoo>

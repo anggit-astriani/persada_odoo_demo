@@ -1,0 +1,185 @@
+<odoo>
+    <!-- Tree View -->
+    <record id="view_customer_map_tree" model="ir.ui.view">
+        <field name="name">customer.map.tree</field>
+        <field name="model">customer.map</field>
+        <field name="arch" type="xml">
+            <tree string="Customer Locations">
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="location_display"/>
+                <field name="active" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View with PostGIS Integration -->
+    <record id="view_customer_map_form" model="ir.ui.view">
+        <field name="name">customer.map.form</field>
+        <field name="model">customer.map</field>
+        <field name="arch" type="xml">
+            <form string="Customer Location">
+                <header>
+                    <button name="action_open_map_view"
+                            string="View on Map"
+                            type="object"
+                            class="btn-primary"
+                            icon="fa-map"/>
+                    <button name="action_geocode_address"
+                            string="Geocode Address"
+                            type="object"
+                            class="btn-secondary"
+                            icon="fa-search"/>
+                    <field name="active" widget="boolean_button" options="{'terminology': 'active'}"/>
+                </header>
+
+                <sheet>
+                    <!-- Header -->
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" class="o_text_overflow" placeholder="Customer Name..."/>
+                        </h1>
+                    </div>
+
+                    <!-- Main Content -->
+                    <notebook>
+                        <!-- Basic Information -->
+                        <page string="Information" name="information">
+                            <group>
+                                <group string="Contact Details">
+                                    <field name="description" placeholder="Description..."/>
+                                    <field name="phone" widget="phone"/>
+                                    <field name="email" widget="email"/>
+                                </group>
+                                <group string="Location Summary">
+                                    <field name="location_display" readonly="1"/>
+                                    <field name="geo_wkt" readonly="1" groups="base.group_no_one"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- Location Tab with PostGIS Map -->
+                        <page string="Location" name="location">
+                            <!-- PostGIS Map Editor -->
+                            <group string="Interactive Map" name="map_group">
+                                <div class="alert alert-info" role="alert">
+                                    <i class="fa fa-info-circle"/>
+                                    Click on the map to set the customer location. You can drag the marker to adjust the position.
+                                </div>
+
+                                <field name="shape"
+                                       widget="geo_edit_map"
+                                       nolabel="1"
+                                       options="{'edit_map_height': 400, 'edit_map_width': '100%'}"
+                                       style="height: 400px; width: 100%;"/>
+                            </group>
+
+                            <!-- Manual Coordinate Entry -->
+                            <group string="Manual Coordinates Entry" name="coords_group">
+                                <div class="alert alert-warning" role="alert">
+                                    <i class="fa fa-exclamation-triangle"/>
+                                    You can also enter coordinates manually. This will update the map location.
+                                </div>
+
+                                <group>
+                                    <field name="latitude" digits="[16,6]"/>
+                                    <field name="longitude" digits="[16,6]"/>
+                                </group>
+
+                                <group>
+                                    <button string="Update Map from Coordinates"
+                                            name="action_set_location_from_coordinates"
+                                            type="object"
+                                            class="btn-info"
+                                            icon="fa-map-marker"/>
+                                    <button string="Clear All Location Data"
+                                            name="action_clear_location"
+                                            type="object"
+                                            class="btn-warning"
+                                            icon="fa-trash"
+                                            confirm="Are you sure you want to clear all location data?"/>
+                                </group>
+                            </group>
+
+                            <!-- Location Tools -->
+                            <group string="Location Tools" name="tools_group" groups="base.group_system">
+                                <div class="alert alert-secondary" role="alert">
+                                    <i class="fa fa-wrench"/>
+                                    Advanced tools for location management.
+                                </div>
+
+                                <field name="geo_wkt" readonly="1" string="PostGIS WKT Geometry"/>
+                            </group>
+                        </page>
+
+                        <!-- History/Notes Tab -->
+                        <page string="Notes" name="notes">
+                            <group>
+                                <field name="description" nolabel="1" placeholder="Additional notes and information about this customer..."/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_customer_map_search" model="ir.ui.view">
+        <field name="name">customer.map.search</field>
+        <field name="model">customer.map</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Customer"
+                       filter_domain="['|', '|', ('name', 'ilike', self), ('phone', 'ilike', self), ('email', 'ilike', self)]"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="description"/>
+
+                <separator/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+
+                <separator/>
+                <filter string="Has Location (PostGIS)" name="has_postgis_location"
+                        domain="[('shape', '!=', False)]"/>
+                <filter string="Has Coordinates" name="has_coordinates"
+                        domain="[('latitude', '!=', False), ('longitude', '!=', False)]"/>
+                <filter string="Missing Location" name="missing_location"
+                        domain="[('shape', '=', False), ('latitude', '=', False)]"/>
+
+                <separator/>
+                <filter string="Has Phone" name="has_phone" domain="[('phone', '!=', False)]"/>
+                <filter string="Has Email" name="has_email" domain="[('email', '!=', False)]"/>
+
+                <group expand="0" string="Group By">
+                    <filter string="Has Location" name="group_has_location"
+                            context="{'group_by': 'location_display'}"/>
+                    <filter string="Active Status" name="group_active"
+                            context="{'group_by': 'active'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Main List/Form Action -->
+    <record id="action_customer_map" model="ir.actions.act_window">
+        <field name="name">Customer Locations</field>
+        <field name="res_model">customer.map</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_customer_map_search"/>
+        <field name="context">{
+            'search_default_active': 1
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first customer location!
+            </p>
+            <p>
+                Track your customers on an interactive PostGIS map.
+                You can set locations by clicking on the map or entering coordinates manually.
+            </p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <!-- Inherit form view stock.picking untuk menambah address fields -->
+        <record id="view_picking_form" model="ir.ui.view">
+            <field name="name">stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='picking_properties']" position="after">
+                    <group>
+                        <group>
+                            <span class="o_form_label o_td_label">
+                                <label for="street" string="Address" style="font-weight:bold;" nolabel="1"/>
+                            </span>
+                            <div class="o_address_format">
+                                <field name="street" placeholder="Street..." class="o_address_street"/>
+                                <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                <field name="city" placeholder="City" class="o_address_city"/>
+                                <field name="state_id" class="o_address_state" placeholder="State" options="{'no_open': True, 'no_quick_create': True}" context="{'country_id': country_id, 'default_country_id': country_id, 'zip': zip}"/>
+                                <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                <div name="partner_address_country" class="d-flex justify-content-between">
+                                    <field name="country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
+                                </div>
+                            </div>
+                            <field name="destination_latitude"/>
+                            <field name="destination_longitude"/>
+                            <field name="delivered_latitude"/>
+                            <field name="delivered_longitude"/>
+                        </group>
+                        <group>
+                            <!-- <field name="proof_of_delivery_before"
+                                widget="image"
+                                filename="proof_of_delivery_before_filename"
+                                style="max-width: 150px; max-height: 150px;"/>
+                            <field name="proof_of_delivery_after"
+                                widget="image"
+                                filename="proof_of_delivery_after_filename"
+                                style="max-width: 150px; max-height: 150px;"/> -->
+                            <field name="shipping_document"
+                                widget="image"
+                                filename="shipping_document_filename"
+                                style="max-width: 150px; max-height: 150px;"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Form View - Modifikasi status bar -->
+        <record id="view_picking_form_custom_status" model="ir.ui.view">
+            <field name="name">stock.picking.form.custom.status</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="attributes">
+                    <attribute name="statusbar_visible" invisible="picking_type_code != 'outgoing'">
+                        draft,confirmed,assigned,delivery,done
+                    </attribute>
+                </xpath>
+
+                <!-- Button untuk start delivery setelah button validate -->
+                <xpath expr="//button[@name='button_validate']" position="after">
+                    <button name="action_start_delivery" 
+                            string="Delivery" 
+                            type="object" 
+                            class="btn-primary"
+                            invisible="state != 'assigned' or picking_type_code != 'outgoing'"
+                            groups="stock.group_stock_user"/>
+
+                    <button name="action_checklist_instalasi_lapangan" 
+                            string="Checklist Instalasi Lapangan" 
+                            type="object" 
+                            class="btn-primary"
+                            invisible="state != 'delivery' or picking_type_code != 'outgoing'"
+                            groups="stock.group_stock_user"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_picking_form_add_detail_product" model="ir.ui.view">
+            <field name="name">stock.picking.form.add.detail.product</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='note']" position="after">
+                    <page string="Detail Product" name="detail_product_page" invisible="(picking_type_code != 'incoming') or ('Return of' in (origin or '')) or (state == 'draft')">
+                        <field name="receipt_product_detail_line_ids" widget="one2many_list">
+                            <tree editable="bottom" create="1" delete="1">
+                                <field name="receipt_id"/>
+                                <field name="product_id"/>
+                                <field name="code_product"/>
+                                <field name="purchase_id"/>
+                                <field name="warehouse_id"/>
+                                <field name="delivery_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Detail Product" name="detail_product_page" invisible="(picking_type_code != 'outgoing') or (state == 'draft')">
+                        <field name="delivery_product_detail_line_ids" widget="one2many_list" context="{'default_delivery_id': active_id}">
+                            <tree editable="bottom" create="1" delete="1">
+                                <field name="delivery_id"/>
+                                <field name="product_id"/>
+                                <field name="receipt_code_product"/>
+                                <field name="warehouse_id"/>
+                                <field name="receipt_id"/>
+                                <field name="is_returned"/>
+                                <field name="return_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Detail Product" name="detail_product_page" invisible="picking_type_code != 'incoming' or 'Return of' not in (origin or '')">
+                        <field name="return_product_detail_line_ids" widget="one2many_list">
+                            <tree editable="bottom" create="1" delete="1">
+                                <field name="return_id"/>
+                                <field name="original_delivery_id"/>
+                                <field name="product_id"/>
+                                <field name="code_product"/>
+                                <field name="warehouse_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <!-- <page string="Detail Product" name="detail_product_page" invisible="picking_type_code != 'incoming' or 'Return of' not in (origin or '')">
+                        <field name="delivery_product_detail_line_ids" widget="one2many_list">
+                            <tree editable="bottom" create="1" delete="1">
+                                <field name="return_id"/>
+                                <field name="delivery_id"/>
+                                <field name="product_id"/>
+                                <field name="receipt_code_product"/>
+                                <field name="warehouse_id"/>
+                                <field name="receipt_id"/>
+                            </tree>
+                        </field>
+                    </page> -->
+                </xpath>
+            </field>
+        </record>
+</odoo>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <record id="checklist_instalasi_product_menu_action" model="ir.actions.act_window">
+        <field name="name">Checklist Instalasi Product</field>
+        <field name="res_model">checklist.instalasi.product</field>
+    </record>
+
+    <record id="checklist_instalasi_product_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="custom_module.checklist_instalasi_product_tree_view"/>
+        <field name="act_window_id" ref="custom_module.checklist_instalasi_product_menu_action"/>
+    </record>
+
+    <record id="checklist_instalasi_product_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="custom_module.checklist_instalasi_product_form_view"/>
+        <field name="act_window_id" ref="custom_module.checklist_instalasi_product_menu_action"/>
+    </record>
+
+    <record id="checklist_instalasi_product_criteria_menu_action" model="ir.actions.act_window">
+        <field name="name">Checklist Instalasi Product Criteria</field>
+        <field name="res_model">checklist.instalasi.product.criteria</field>
+    </record>
+
+    <record id="checklist_instalasi_product_criteria_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="custom_module.checklist_instalasi_product_criteria_tree_view"/>
+        <field name="act_window_id" ref="custom_module.checklist_instalasi_product_criteria_menu_action"/>
+    </record>
+
+    <record id="checklist_instalasi_product_criteria_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="custom_module.checklist_instalasi_product_criteria_form_view"/>
+        <field name="act_window_id" ref="custom_module.checklist_instalasi_product_criteria_menu_action"/>
+    </record>
+
+    <record id="checklist_instalasi_lapangan_menu_action" model="ir.actions.act_window">
+        <field name="name">Checklist Instalasi Lapangan</field>
+        <field name="res_model">checklist.instalasi.lapangan</field>
+    </record>
+
+    <record id="checklist_instalasi_lapangan_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="custom_module.checklist_instalasi_lapangan_tree_view"/>
+        <field name="act_window_id" ref="custom_module.checklist_instalasi_lapangan_menu_action"/>
+    </record>
+
+    <record id="checklist_instalasi_lapangan_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="custom_module.checklist_instalasi_lapangan_form_view"/>
+        <field name="act_window_id" ref="custom_module.checklist_instalasi_lapangan_menu_action"/>
+    </record>
+</odoo>

@@ -1,0 +1,44 @@
+<odoo>
+    <data>
+        <record id="customer_map_vector_layer" model="geoengine.vector.layer">
+            <field name="name">Customer Locations</field>
+            <field name="geo_field_id" search="[('model','=','customer.map'),('name','=','shape')]"/>
+            <field name="view_id" ref="customer_map_geoengine_view"/>
+            <field name="geo_repr">basic</field>
+            <field name="active_on_startup" eval="True"/>
+            <field name="classification">unique</field>
+            <field name="opacity">1.0</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="customer_map_raster_osm" model="geoengine.raster.layer">
+            <field name="name">OpenStreetMap</field>
+            <field name="raster_type">osm</field>
+            <field name="view_id" ref="customer_map_geoengine_view"/>
+            <field name="overlay" eval="False"/>
+            <field name="opacity">1.0</field>
+            <field name="sequence">1</field>
+            <field name="active_on_startup" eval="True"/>
+        </record>
+
+        <record id="customer_map_raster_bing" model="geoengine.raster.layer">
+            <field name="name">Bing Satellite</field>
+            <field name="raster_type">bing</field>
+            <field name="view_id" ref="customer_map_geoengine_view"/>
+            <field name="overlay" eval="False"/>
+            <field name="opacity">1.0</field>
+            <field name="sequence">2</field>
+            <field name="active_on_startup" eval="False"/>
+        </record>
+
+        <record id="customer_map_raster_google" model="geoengine.raster.layer">
+            <field name="name">Google Maps</field>
+            <field name="raster_type">google</field>
+            <field name="view_id" ref="customer_map_geoengine_view"/>
+            <field name="overlay" eval="False"/>
+            <field name="opacity">1.0</field>
+            <field name="sequence">3</field>
+            <field name="active_on_startup" eval="False"/>
+        </record>
+    </data>
+</odoo>

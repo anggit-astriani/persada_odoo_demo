@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <record id="checklist_instalasi_product_tree_view" model="ir.ui.view">
+        <field name="name">checklist_instalasi_product_tree_view</field>
+        <field name="model">checklist.instalasi.product</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="product_id"/>
+                <field name="title"/>
+                <field name="sequence"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="checklist_instalasi_product_form_view" model="ir.ui.view">
+        <field name="name">checklist_instalasi_product_form_view</field>
+        <field name="model">checklist.instalasi.product</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="product_id"/>
+                            <field name="title"/>
+                            <field name="sequence"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="checklist_instalasi_product_criteria_tree_view" model="ir.ui.view">
+        <field name="name">checklist_instalasi_product_criteria_tree_view</field>
+        <field name="model">checklist.instalasi.product.criteria</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="checklist_instalasi_product_id"/>
+                <field name="criteria"/>
+                <field name="information"/>
+                <field name="sequence"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="checklist_instalasi_product_criteria_form_view" model="ir.ui.view">
+        <field name="name">checklist_instalasi_product_criteria_form_view</field>
+        <field name="model">checklist.instalasi.product.criteria</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="checklist_instalasi_product_id"/>
+                            <field name="criteria"/>
+                            <field name="information"/>
+                            <field name="sequence"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="checklist_instalasi_lapangan_tree_view" model="ir.ui.view">
+        <field name="name">checklist_instalasi_lapangan_tree_view</field>
+        <field name="model">checklist.instalasi.lapangan</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="delivery_id"/>
+                <!-- <field name="user_id"/> -->
+                <field name="officer_id"/>
+                <field name="latitude"/>
+                <field name="longitude"/>
+                <field name="information"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="checklist_instalasi_lapangan_image_tree_view" model="ir.ui.view">
+        <field name="name">checklist.instalasi.lapangan.image.tree</field>
+        <field name="model">checklist.instalasi.lapangan.image</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="checklist_instalasi_lapangan_id"/>
+                <field name="product_id"/>
+                <field name="checklist_instalasi_product_id"/>
+                <field name="product_criteria_ids"/>
+                <field name="information"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- jika ingin menggunakan ini agar ada pager, maka hapus view_id (biarkan kosong) -->
+    <record id="action_checklist_instalasi_lapangan_image" model="ir.actions.act_window">
+        <field name="name">Checklist Instalasi Lapangan Image</field>
+        <field name="res_model">checklist.instalasi.lapangan.image</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="view_id" ref="checklist_instalasi_lapangan_image_tree_view"/> -->
+        <field name="context">{}</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="checklist_instalasi_lapangan_form_view" model="ir.ui.view">
+        <field name="name">checklist_instalasi_lapangan_form_view</field>
+        <field name="model">checklist.instalasi.lapangan</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="delivery_id"/>
+                            <field name="latitude"/>
+                            <field name="longitude"/>
+                        </group>
+                        <group>
+                            <!-- <field name="user_id"/> -->
+                            <field name="officer_id"/>
+                            <field name="information"/>
+                            <!-- <button name="%(action_checklist_instalasi_lapangan_image)d"
+                                type="action"
+                                string="Lihat Checklist Image"
+                                class="btn-secondary"/> -->
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Produk">
+                            <field name="product_line_ids" nolabel="1" options="{'reload_on_button':True}">
+                                <tree edit="true" editable="false" create="true" delete="true">
+                                    <field name="checklist_id"/>
+                                    <field name="product_id"/>
+                                    <field name="demand"/>
+                                    <field name="quantity"/>
+                                    <button name="action_checklist_instalasi"
+                                        string="Checklist Instalasi"
+                                        type="object"
+                                        icon="fa-external-link"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- 1. Tree view kustom untuk instalasi image (masih belum bisa digunakan)-->
+    <record id="checklist_instalasi_lapangan_image_tree" model="ir.ui.view">
+        <field name="name">checklist.instalasi.lapangan.image.tree.custom</field>
+        <field name="model">checklist.instalasi.lapangan.image</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <tree string="Checklist Image">
+                <field name="checklist_instalasi_lapangan_id"/>
+                <field name="checklist_instalasi_product_id"/>
+                <field name="product_criteria_ids" widget="many2many_tags"/>
+                <field name="information"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="checklist_instalasi_lapangan_image_form_view" model="ir.ui.view">
+        <field name="name">checklist.instalasi.lapangan.image.form</field>
+        <field name="model">checklist.instalasi.lapangan.image</field>
+        <field name="priority">10</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="checklist_instalasi_lapangan_id"/>
+                            <field name="product_id"/>
+                        </group>
+                        <group>
+                            <field name="checklist_instalasi_product_id"/>
+                            <field name="information"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Product Criteria">
+                            <field name="product_criteria_ids"/>
+                        </page>
+                    </notebook>
+                    <group string="Image" col="4">
+                        <field name="image" widget="image" nolabel="1"
+                            options="{'size': [250, 250]}"/>
+                        <field name="image1" widget="image" nolabel="1"
+                            options="{'size': [250, 250]}"/>
+                        <field name="image2" widget="image" nolabel="1"
+                            options="{'size': [250, 250]}"/>
+                        <field name="image3" widget="image" nolabel="1"
+                            options="{'size': [250, 250]}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

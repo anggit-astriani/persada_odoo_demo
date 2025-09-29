@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Customer Map Tracking Categories -->
+    <record id="module_customer_map_category" model="ir.module.category">
+        <field name="name">Customer Map Tracking</field>
+        <field name="description">Customer location tracking and mapping</field>
+        <field name="sequence">50</field>
+    </record>
+
+    <!-- User Group -->
+    <record id="group_customer_map_user" model="res.groups">
+        <field name="name">Customer Map User</field>
+        <field name="category_id" ref="module_customer_map_category"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">Can view and manage customer locations</field>
+    </record>
+
+    <!-- Manager Group -->
+    <record id="group_customer_map_manager" model="res.groups">
+        <field name="name">Customer Map Manager</field>
+        <field name="category_id" ref="module_customer_map_category"/>
+        <field name="implied_ids" eval="[(4, ref('group_customer_map_user'))]"/>
+        <field name="comment">Can manage all customer map settings and configurations</field>
+    </record>
+
+    <!-- Admin Group -->
+    <record id="group_customer_map_admin" model="res.groups">
+        <field name="name">Customer Map Administrator</field>
+        <field name="category_id" ref="module_customer_map_category"/>
+        <field name="implied_ids" eval="[(4, ref('group_customer_map_manager')), (4, ref('base.group_system'))]"/>
+        <field name="comment">Full administrative access to customer map tracking</field>
+    </record>
+
+    <!-- Record Rules -->
+
+    <!-- All users can see all customer records -->
+    <record id="customer_map_rule_all" model="ir.rule">
+        <field name="name">Customer Map: All Records</field>
+        <field name="model_id" ref="model_customer_map"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_customer_map_user'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+
+    <!-- Managers can delete records -->
+    <record id="customer_map_rule_manager" model="ir.rule">
+        <field name="name">Customer Map: Manager Delete</field>
+        <field name="model_id" ref="model_customer_map"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_customer_map_manager'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+</odoo>

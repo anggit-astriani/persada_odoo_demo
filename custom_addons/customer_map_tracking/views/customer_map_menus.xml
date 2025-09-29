@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+        <!-- Root Menu -->
+        <menuitem id="menu_customer_map_root"
+                  name="Customer Tracking"
+                  web_icon="customer_map_tracking,static/description/icon.png"
+                  sequence="50"/>
+
+        <!-- Interactive Dashboard Menu (JavaScript-based) -->
+        <menuitem id="menu_customer_map_js_dashboard"
+                  name="Interactive Dashboard"
+                  parent="menu_customer_map_root"
+                  action="action_customer_map_js_dashboard"
+                  sequence="5"/>
+
+        <!-- Standard Customers List -->
+        <menuitem id="menu_customer_map_customers"
+                  name="Customer List"
+                  parent="menu_customer_map_root"
+                  action="action_customer_map"
+                  sequence="20"/>
+    </data>
+</odoo>
