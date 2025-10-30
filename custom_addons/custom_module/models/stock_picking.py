@@ -2,12 +2,15 @@ from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 import logging
 
-_logger = logging.getLogger(__name__)
+_logger = logging.getLogger(__name__)   # Logger untuk debugging dan mencatat informasi/error
 
 class StockPicking(models.Model):
-    _inherit = 'stock.picking'
+    _inherit = 'stock.picking'   # Meng-extend model stock.picking bawaan Odoo
     # _inherit = ['mail.thread', 'mail.activity.mixin']
 
+    # ==========================
+    # Fields Alamat dan Lokasi
+    # ==========================
     street = fields.Char(string='Street')
     street2 = fields.Char(string='Street 2')
     city = fields.Char(string='City')
@@ -15,6 +18,9 @@ class StockPicking(models.Model):
     zip = fields.Char(string='ZIP')
     country_id = fields.Many2one('res.country', string='Country')
 
+    # ==========================
+    # Koordinat tujuan dan dikirim
+    # ==========================
     destination_latitude = fields.Float(
         string='Destination Latitude',
         digits=(16, 6),
@@ -40,6 +46,9 @@ class StockPicking(models.Model):
         help='Longitude coordinate (manual entry)'
     )
 
+    # ==========================
+    # Attachment Dokumen / Foto
+    # ==========================
     proof_of_delivery_before = fields.Binary(string="Proof of Delivery Before Departure", attachment=True)
     proof_of_delivery_before_filename = fields.Char(string="Filename")
     proof_of_delivery_after = fields.Binary(string="Proof of Delivery After Delivery", attachment=True)
@@ -48,6 +57,9 @@ class StockPicking(models.Model):
     shipping_document = fields.Binary(string="Shipping Document", attachment=True)
     shipping_document_filename = fields.Char(string="Filename")
 
+    # ==========================
+    # Detail Produk (One2many)
+    # ==========================
     receipt_product_detail_line_ids = fields.One2many('inventory.receipt.product.detail', 'receipt_id', string='Detail Product Lines')
     delivery_product_detail_line_ids = fields.One2many('inventory.delivery.product.detail', 'delivery_id', string='Detail Product Lines')
     return_product_detail_line_ids = fields.One2many('inventory.return.product.detail', 'return_id', string='Return Detail Product Lines')
@@ -74,6 +86,9 @@ class StockPicking(models.Model):
 
     active = fields.Boolean(default=True, tracking=True)
 
+    # ==========================
+    # Status Picking
+    # ==========================
     state = fields.Selection(
         [
             ('draft', 'Draft'),
@@ -87,6 +102,9 @@ class StockPicking(models.Model):
     )
 
 
+    # ==========================
+    # Onchange untuk auto-update negara / state
+    # ==========================
     @api.onchange('state_id')
     def _onchange_state_id(self):
         """Auto-update country when state changes"""
@@ -97,23 +115,28 @@ class StockPicking(models.Model):
     def _onchange_country_id(self):
         """Clear state if country changes"""
         if self.country_id:
-            # Only clear state if it doesn't belong to selected country
+            # Clear state jika tidak sesuai dengan country yang dipilih
             if self.state_id and self.state_id.country_id != self.country_id:
                 self.state_id = False
         else:
             self.state_id = False
 
+    # ==========================
+    # Method untuk memulai pengiriman
+    # ==========================
     def action_start_delivery(self):
         """Method untuk memulai pengiriman (mengubah status ke delivery)"""
         for picking in self:
-            if picking.state == 'assigned':
-                # Gunakan write untuk update state secara langsung
-                picking.write({'state': 'delivery'})
+            if picking.state == 'assigned':  # Hanya picking yang ready to send
+                picking.write({'state': 'delivery'})  # Update state menjadi 'delivery'
         return True
     
+    # ==========================
+    # Wizard Checklist Instalasi Lapangan
+    # ==========================
     def action_checklist_instalasi_lapangan(self):
         """Open wizard checklist instalasi lapangan dari Delivery Order"""
-        self.ensure_one()
+        self.ensure_one()   # Pastikan hanya 1 record yang diproses
         wizard = self.env['checklist.instalasi.lapangan.wizard'].create({
             'delivery_id': self.id,
             'latitude': self.delivered_latitude,
@@ -122,14 +145,14 @@ class StockPicking(models.Model):
         })
 
         product_lines = []
-        for move in self.move_ids_without_package:
+        for move in self.move_ids_without_package:   # Ambil semua move line produk
             product_lines.append((0, 0, {
                 'product_id': move.product_id.id,
                 'demand': move.product_uom_qty,
                 'uom_id': move.product_uom.id,
                 'quantity': move.quantity,
             }))
-        wizard.product_line_ids = product_lines
+        wizard.product_line_ids = product_lines   # Assign product line ke wizard
         # print("Produk dari DO %s: %s", move.name, product_lines)
 
         return {
@@ -213,42 +236,53 @@ class StockPicking(models.Model):
 # --------------------------- ini adalah kode yang dari calude --------------------------------------- 
     def action_create_return_from_delivery(self, original_delivery_id):
         """Method untuk membuat return picking dari delivery"""
+        
+        # Ambil record delivery asli berdasarkan ID
         original_delivery = self.env['stock.picking'].browse(original_delivery_id)
         
+        # Validasi: pastikan delivery ada dan tipe picking adalah 'outgoing' (pengiriman keluar)
         if not original_delivery or original_delivery.picking_type_id.code != 'outgoing':
             raise ValueError("Invalid delivery picking")
         
-        # Buat return picking
+        # ==========================
+        # Buat dictionary values untuk return picking
+        # ==========================
         return_picking_vals = {
+            # Cari picking_type untuk incoming (return) di warehouse yang sama
             'picking_type_id': self.env['stock.picking.type'].search([
                 ('code', '=', 'incoming'),
                 ('warehouse_id', '=', original_delivery.picking_type_id.warehouse_id.id)
             ], limit=1).id,
+            # Lokasi asal return = lokasi tujuan delivery
             'location_id': original_delivery.location_dest_id.id,
+            # Lokasi tujuan return = lokasi asal delivery
             'location_dest_id': original_delivery.location_id.id,
             'partner_id': original_delivery.partner_id.id,
-            'origin': f"Return of {original_delivery.name}",
+            'origin': f"Return of {original_delivery.name}",  # Referensi ke delivery asli
         }
         
+        # Buat record return picking
         return_picking = self.create(return_picking_vals)
         
+        # ==========================
         # Ambil semua delivery detail yang belum di-return
+        # ==========================
         delivery_details = original_delivery.delivery_product_detail_line_ids.filtered(
             lambda x: not x.is_returned
         )
         
         if delivery_details:
-            # Buat return details dari delivery details
+            # Buat return product detail dari delivery details
             self.env['inventory.return.product.detail'].create_from_delivery_detail(
                 delivery_details.ids, return_picking.id
             )
             
-            # Buat move lines untuk return picking
+            # Buat stock.move lines untuk return picking
             for detail in delivery_details:
                 move_vals = {
                     'name': detail.product_id.name,
                     'product_id': detail.product_id.id,
-                    'product_uom_qty': 1,
+                    'product_uom_qty': 1,  # Qty per line 1 per detail
                     'product_uom': detail.product_id.uom_id.id,
                     'picking_id': return_picking.id,
                     'location_id': return_picking.location_id.id,
@@ -256,21 +290,28 @@ class StockPicking(models.Model):
                 }
                 self.env['stock.move'].create(move_vals)
         
-        return return_picking
+        return return_picking  # Kembalikan record return picking
 
+
+    # ==========================
+    # Onchange untuk generate detail lines otomatis
+    # ==========================
     @api.onchange('move_ids_without_package', 'move_ids_without_package.quantity')
     def _onchange_generate_detail_lines(self):
         for picking in self:
             picking_type = picking.picking_type_id.code
 
+            # ==========================
+            # Jika tipe picking = incoming (penerimaan)
+            # ==========================
             if picking_type == 'incoming':
-                # Check if this is a return picking
+                # Cek apakah ini return picking
                 is_return = 'Return of' in (picking.origin or '')
                 
                 if not is_return:
-                    # Normal receipt
+                    # Normal receipt (penerimaan biasa)
                     receipt_lines = []
-                    picking.receipt_product_detail_line_ids = [(5, 0, 0)]
+                    picking.receipt_product_detail_line_ids = [(5, 0, 0)]  # Reset dulu semua lines
                     for move in picking.move_ids_without_package:
                         product = move.product_id
                         qty = int(move.quantity)
@@ -281,11 +322,15 @@ class StockPicking(models.Model):
                                 'purchase_id': picking.purchase_id.id if picking.purchase_id else False,
                                 'warehouse_id': picking.picking_type_id.warehouse_id.id if picking.picking_type_id.warehouse_id else False,
                             }))
+                    # Assign lines ke receipt_product_detail_line_ids
                     picking.receipt_product_detail_line_ids = receipt_lines
 
+            # ==========================
+            # Jika tipe picking = outgoing (pengiriman)
+            # ==========================
             elif picking_type == 'outgoing':
                 delivery_lines = []
-                picking.delivery_product_detail_line_ids = [(5, 0, 0)]
+                picking.delivery_product_detail_line_ids = [(5, 0, 0)]  # Reset dulu semua lines
                 for move in picking.move_ids_without_package:
                     product = move.product_id
                     qty = int(move.quantity)
@@ -297,6 +342,9 @@ class StockPicking(models.Model):
                         }))
                 picking.delivery_product_detail_line_ids = delivery_lines
 
+            # ==========================
+            # Tipe picking lain (misal internal) -> kosongkan semua lines
+            # ==========================
             else:
                 picking.receipt_product_detail_line_ids = [(5, 0, 0)]
                 picking.delivery_product_detail_line_ids = [(5, 0, 0)]

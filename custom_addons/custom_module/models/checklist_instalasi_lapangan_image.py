@@ -26,8 +26,9 @@ class ChecklistInstalasiLapanganImage(models.Model):
     def _compute_product_criteria(self):
         for record in self:
             if record.checklist_instalasi_product_id:
+                # Ambil semua criteria yang terkait dengan product yang dipilih
                 record.product_criteria_ids = self.env['checklist.instalasi.product.criteria'].search([
                     ('checklist_instalasi_product_id', '=', record.checklist_instalasi_product_id.id)
                 ])
             else:
-                record.product_criteria_ids = False
+                record.product_criteria_ids = False  # Jika tidak ada product, kosongkan
